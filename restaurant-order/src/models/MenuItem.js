@@ -1,32 +1,26 @@
 const mongoose = require("mongoose");
-const menuItemSchema = new mongoose.Schema({
-  title: { type: String, 
-            required: true,
-            trim: true },
+const menuItemSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true, trim: true },
 
+    description: { type: String, required: true, trim: true },
 
-  description: { type: String, 
-                 required: true,
-                 trim: true },
+    price: { type: Number, required: true, min: [0, "Price must be positive"] },
 
-    price: { type: Number,
-             required: true,
-             min: [0, "Price must be positive"] },
+    category: {
+      type: String,
+      required: true,
+      enum: {
+        values: ["starter", "main", "dessert", "drink"],
+        message: "{VALUE} is not a valid category",
+      },
+    },
 
+    available: { type: Boolean, default: true },
 
-    category: { type: String, 
-                required: true,
-                enum: { 
-                values: ["appetizer", "main course", "dessert", "beverage"], 
-                message: "{VALUE} is not a valid category",},},
-
-    available: { type: Boolean, 
-                 default: true },
-
-    imageUrl: { type: String, 
-                default: ""},
-},
-{ timestamps: true }
+    imageUrl: { type: String, default: "" },
+  },
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("MenuItem", menuItemSchema);
